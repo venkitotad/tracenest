@@ -1,0 +1,22 @@
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tracenest-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tracenest
+      POSTGRES_PASSWORD: tracenest_dev
+      POSTGRES_DB: tracenest_demo
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tracenest -d tracenest_demo"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:
